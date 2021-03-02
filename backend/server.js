@@ -1,4 +1,4 @@
-const http = require('http');
+const https = require('http');
 const app = require('./app');
 
 // revoie un port valide sous forme de numéro ou chaine
@@ -37,7 +37,7 @@ const errorHandler = error => { //gère les erreurs qui sont ensuite enristrées
     }
 };
 
-const server = http.createServer(app);
+const server = https.createServer(app);
 
 server.on('error', errorHandler);
 server.on('listening', () => {

@@ -3,9 +3,7 @@ const fs = require('fs');                   //Files System qui permet d'avoir ac
 
 // Pour ajouter un objet dans la base de données
 exports.createSauce =  (req, res, next) => {
-    const sauceObject = JSON.parse(req.body.sauce);     
-    console.log(sauceObject);
-    //delete sauceObject._id;
+    const sauceObject = JSON.parse(req.body.sauce);
     const sauce = new Sauce({
         ...sauceObject,                                      
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
