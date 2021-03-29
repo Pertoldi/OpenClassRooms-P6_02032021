@@ -8,11 +8,10 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, 'images')                //images = nom du dossier destination dans lequel on stocks les fichiers.
+        callback(null, 'images')
     },
     filename: (req, file, callback) => {
-        const name = file.originalname.split(' ').join('_').split('.')[0];    //retire les espace pour les remplacer par "_"
-        console.log(name);
+        const name = file.originalname.split(' ').join('_'); 
         const extention = MIME_TYPES[file.mimetype];
         callback(null, name + Date.now() + '.' + extention);     //le nouveau filename avec le nom sans espace + un timestamp(pour sassurer que le nom est unique à la miliseconde près) + . et l'extention
     }
