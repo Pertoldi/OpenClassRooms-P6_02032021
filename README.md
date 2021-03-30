@@ -2,7 +2,7 @@
 
 # Lien vers repository:
 
-https://github.com/Pertoldi/PertoldiAntoine_6_03022021
+https://github.com/Pertoldi/PertoldiAntoine_6_02032021
 
 Debut du projet le 02/03/2021. 
 Il s'agit d'un exercice de la plateforme OpenClassRooms dans le cadre de la formation developpeur web.
