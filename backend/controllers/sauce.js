@@ -51,29 +51,32 @@ exports.createSauce = (req, res, next) => {
 
 exports.modifySauce = (req, res, next) => {
 	//CONTROL FORM
+	// console.log(JSON.parse(req.body.sauce));
+	// const tempBody = JSON.parse(req.body);
+	// console.log(tempBody);
+	
 	let messageError = "";
 	let isOk = true;
 	let checkSpecialCaractere = /^[^@&"'`~^#{}<>_=\[\]\\()/§$£€*\+]+$/;
 	let checkOneOrTwoNumber = /^[0-9]{1,2}$/;
 
-	const tempBody = JSON.parse(req.body.sauce);
 
-	if (!checkSpecialCaractere.test(tempBody.name)) {
+	if (!checkSpecialCaractere.test(req.body.name)) {
 		isOk = false;
 		messageError = "Name invalide !";
-	} else if (!checkSpecialCaractere.test(tempBody.manufacturer)) {
+	} else if (!checkSpecialCaractere.test(req.body.manufacturer)) {
 		isOk = false;
 		messageError = "Manufacturer invalide !";
-	} else if (!checkSpecialCaractere.test(tempBody.description)) {
+	} else if (!checkSpecialCaractere.test(req.body.description)) {
 		isOk = false;
 		messageError = "Description invalide !";
-	} else if (!checkSpecialCaractere.test(tempBody.mainPepper)) {
+	} else if (!checkSpecialCaractere.test(req.body.mainPepper)) {
 		isOk = false;
 		messageError = "MainPepper invalide !";
-	} else if (!checkOneOrTwoNumber.test(tempBody.heat)) {
+	} else if (!checkOneOrTwoNumber.test(req.body.heat)) {
 		isOk = false;
 		messageError = "Heat is not a number";
-	} else if (!checkSpecialCaractere.test(tempBody.userId)) {
+	} else if (!checkSpecialCaractere.test(req.body.userId)) {
 		isOk = false;
 		messageError = "UserId invalid";
 	}
@@ -85,18 +88,18 @@ exports.modifySauce = (req, res, next) => {
 				...JSON.parse(req.body.sauce),
 				imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 			} : { ...req.body };
-		
+
 		//On supprime l'ancienne image(si elle est mise à jour) avant de mettre à jour la sauce.
-		if(req.file) {
+		if (req.file) {
 			Sauce.findOne({ _id: req.params.id })
-			.then(sauce => {
-				oldImg = sauce.imageUrl.split('/images/')[1];
-				fs.unlink(`images/${oldImg}`, (err) => {
-					if (err) throw err;
-					console.log('Old image -> successfully deleted !');
-				});
-			})
-			.catch();
+				.then(sauce => {
+					oldImg = sauce.imageUrl.split('/images/')[1];
+					fs.unlink(`images/${oldImg}`, (err) => {
+						if (err) throw err;
+						console.log('Old image -> successfully deleted !');
+					});
+				})
+				.catch();
 		}
 
 		Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
@@ -111,10 +114,10 @@ exports.modifySauce = (req, res, next) => {
 // Supprime un élément de la base de données
 exports.deleteSauce = (req, res, next) => {
 
-	Sauce.findOne({ _id: req.params.id })                   // on cherche l'objet à suppr
+	Sauce.findOne({ _id: req.params.id })
 		.then(sauce => {
-			const filename = sauce.imageUrl.split('/images/')[1];// quand on le trouve on extrait le nom du fichier à supprimé
-			fs.unlink(`images/${filename}`, () => {                 // fs.unlink pour supprimer le fichier passé en url
+			const filename = sauce.imageUrl.split('/images/')[1];
+			fs.unlink(`images/${filename}`, () => {
 				Sauce.deleteOne({ _id: req.params.id })                 //callback: une fois la suppr du fichier effectuer on fait la suppression de l'objet dans la base
 					.then(() => res.status(200).json({ message: 'Objet supprimé !' }))
 					.catch(error => res.status(400).json({ error }));
