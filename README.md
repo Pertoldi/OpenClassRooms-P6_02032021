@@ -18,5 +18,6 @@ Le fichier fuzzer.js est un test de fuzzing avorté.
 
 # Mise en place du projet:
 
+Un fichier .env est nécessaire.
 Entrer la commande 'ng serve' dans le dossier dwj-project6-master pour lancer le front-end.
 Entrer la commande nodemon ./server.js pour lancer le back-end
